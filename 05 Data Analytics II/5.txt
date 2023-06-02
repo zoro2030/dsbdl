@@ -1,0 +1,67 @@
+'''ASSIGNMENT NO. 5
+    Implement logistic regression using Python/R to perform classification on
+    Social_Network_Ads.csv dataset.
+    Compute Confusion matrix to find TP, FP, TN, FN, Accuracy, Error rate, Precision, Recall on
+    the given dataset'''
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from math import exp
+
+data = pd.read_csv("Social.csv")
+data.head()
+
+data.describe()
+
+# Visualizing the dataset
+plt.scatter(data['Age'], data['Purchased'])
+plt.xlabel("age")
+plt.ylabel("purchased")
+plt.show()
+
+# Divide the data to training set and test set
+X_train, X_test, y_train, y_test = train_test_split(data['Age'], data['Purchased'],test_size=0.20)
+
+from sklearn.linear_model import LogisticRegression
+model = LogisticRegression()
+model.fit(X_train.values.reshape(-1, 1), y_train.values.reshape(-1, 1).ravel())
+#making prediction
+y_pred_sk = model.predict(X_test.values.reshape(-1, 1))
+plt.clf()
+plt.scatter(X_test, y_test)
+plt.scatter(X_test, y_pred_sk, c="red")
+plt.xlabel("age")
+plt.ylabel("purchased")
+plt.show()
+print(f"Accuracy = {model.score(X_test.values.reshape(-1, 1),y_test.values.reshape(-1, 1))}")
+
+#Confusion Matrix 
+from sklearn.metrics import confusion_matrix
+tn, fp, fn, tp = confusion_matrix(y_test, y_pred_sk).ravel()
+print("True Negatives: ",tn)
+print("False Positives: ",fp)
+print("False Negatives: ",fn)
+print("True Positives: ",tp)
+
+#Accuracy
+#Precision : It is the ‘Exactness’, ability of the model to return only relevant instances.
+#Recall : It is the ‘Completeness’, ability of the model to identify all relevant instances, True Positive Rate, aka Sensitivity.
+#Error rate :Error rate (ERR) is calculated as the number of all incorrect predictions (FN + FP) divided by the total number of the dataset (P + N).
+
+Accuracy = (tn+tp)*100/(tp+tn+fp+fn)
+print("Accuracy {:0.2f}%:".format(Accuracy))
+
+
+Precision = tp*100/(tp+fp)
+print("Precision {:0.2f}%".format(Precision))
+
+
+Recall = tp*100/(tp+fn)
+print("Recall {:0.2f}%".format(Recall))
+
+
+err = (fp + fn)*100/(tp + tn + fn + fp)
+print("Error rate {:0.2f}%".format(err))
+

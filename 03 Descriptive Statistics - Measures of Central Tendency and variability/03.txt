@@ -1,0 +1,53 @@
+'''Assignment No. 3
+Title of the Assignment: Data Visualization I
+Descriptive Statistics - Measures of Central Tendency and variability
+Perform the following operations on any open source dataset (e.g., data.csv)
+1. Provide summary statistics (mean, median, minimum, maximum, standard deviation) for a dataset (age, 
+income etc.) with numeric variables grouped by one of the qualitative (categorical) variable. For 
+example, if your categorical variable is age groups and quantitative variable is income, then provide 
+summary statistics of income grouped by the age groups. Create a list that contains a numeric value for 
+each response to the categoricalvariable.
+2. Write a Python program to display some basic statistical details like percentile, mean, standard 
+deviation etc. of the species of ‘Iris-setosa’, ‘Iris-versicolor’ and ‘Iris-verginica’ ofiris.csv dataset. 
+Provide the codes with outputs and explain everything that you do in this step'''
+
+#part 1
+
+import pandas as pd
+
+df=pd.read_csv("p3.csv")
+
+df.Age_Group.unique()
+print(df)
+
+print(df.groupby(df.Age_Group).count())
+print(df.groupby(df.Age_Group).min())
+print(df.groupby(df.Age_Group).max())
+print(df.groupby(df.Age_Group).mean())
+print(df.groupby(df.Age_Group).median())
+print(df.groupby(df.Age_Group).std())
+
+df.groupby(df.Age_Group).describe()
+
+#part 2
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# reading database in variables
+df = pd.read_csv("iris.csv")
+print(df.head())
+
+df.species.unique()
+
+grouped_df = df.groupby('species').mean()
+grouped_df
+
+df.groupby(df.species).count()#like we can find min() , max(), std()
+
+df.groupby(df.species).min()
+df.groupby(df.species).max()
+df.groupby(df.species).mean()
+df.groupby(df.species).std()
+df.groupby(df.species).median()

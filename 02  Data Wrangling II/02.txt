@@ -1,0 +1,57 @@
+'''Assignment No. 2
+Title of the Assignment: Data Wrangling, II
+Create an “Academic performance” dataset of students and perform the following
+operations using Python.
+1. Scan all variables for missing values and inconsistencies. If there are missing values
+and/or inconsistencies, use any of the suitable techniques to deal with them.
+2. Scan all numeric variables for outliers. If there are outliers, use any of the suitable
+techniques to deal with them.
+3. Apply data transformations on at least one of the variables. The purpose of this
+transformation should be one of the following reasons: to change the scale for
+better understanding of the variable, to convert a non-linear relation into a linear
+one, or to decrease the skewness and convert the distribution into a normal
+distribution. Reason and document your approach properly.'''
+
+import pandas as pd
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("student.csv")
+
+# Finding Null Values in specific column and filling null values with "No marks".
+print(pd.isnull(data['Marks']))
+
+new_data = data['Marks'].dropna()
+print(new_data)
+
+#new_d = data.replace(to_replace='NaN',value = 'hi')
+#print(new_d)
+
+data['Marks'].fillna('No Marks',inplace=True)
+print(data)
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+data = pd.read_csv("student.csv")
+
+
+# Create a boxplot for the "Test 1 score" variable
+boxplot = data.boxplot(column=['ID','Marks'])
+plt.show()
+
+#Detecting outliers using Scatterplot
+fig, ax = plt.subplots(figsize=(18, 10))
+ax.scatter(data['ID'], data['Marks'])
+plt.show()
+
+print(np.where((data['Marks']<6) & (data['Marks']>1)))
+
+#median finding
+sorted_rscore= sorted(data['Marks'])
+median=np.median(sorted_rscore)
+print(median)
+
+#Detecting outliers using Z-Score for the Math_score variable and remove the outliers. Histograph
+data['Marks'].plot(kind = 'hist')
+

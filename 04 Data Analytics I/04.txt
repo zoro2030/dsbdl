@@ -1,0 +1,68 @@
+'''Assignment No. 4
+Title of the Assignment: Data Analytics I
+1. Create a Linear Regression Model using Python/R to predict home prices using Boston 
+Housing Dataset (https://www.kaggle.com/c/boston-housing). The Boston Housing 
+dataset contains information about various houses in Boston through different 
+parameters. There are 506 samples and 14 feature variables in this dataset. The 
+objective is to predict the value of prices of the house using the given features.'''
+
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+import numpy as np
+
+# load the housing data from the scikit-learn library
+from sklearn import datasets 
+data = datasets.load_boston()
+
+# We print the value of the boston_dataset to understand what it contains
+print(data.keys())
+
+df = pd.DataFrame(data.data,columns=data.feature_names)
+df
+
+#We create a new column of target values and add it to the dataframe.
+df['Price'] = data.target
+df.head()
+
+#Info of Boston Dataset
+df.info()
+df.describe()
+
+# Data preprocessing
+df.isnull().sum()
+
+#we create a correlation matrix that measures the linear relationships
+sns.heatmap(df.corr(), annot=True)
+
+from sklearn.model_selection import train_test_split
+
+x = pd.DataFrame(np.c_[df.LSTAT, df.RM], columns=['LSTAT', 'RM'])
+y = data.Price
+x
+
+X_train, X_test, Y_train, Y_test = train_test_split(x,y, test_size=0.2, random_state=5)
+
+#We use scikit-learn’s LinearRegression to train our model on both the training and test sets.
+from sklearn.linear_model import LinearRegression
+model = LinearRegression()
+model.fit(X_train, Y_train)
+
+y_pred = model.predict(X_test)
+
+#Mean Squared Error and R2 Score.
+from sklearn.metrics import mean_squared_error
+from sklearn.metrics import r2_score
+
+rmse = np.sqrt(mean_squared_error(Y_test, y_pred))
+r2 = r2_score(Y_test, y_pred)
+
+print('RMSE is: {}'.format(rmse))
+print('R2  Score is: {}'.format(r2))
+
+# Predicting selling price –
+sample_data = [[6.89, 9.99]]
+
+price = model.predict(sample_data)
+print("Selling price for the house is ${:,.2f}".format(price[0]))
+

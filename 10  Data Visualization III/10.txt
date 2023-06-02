@@ -1,0 +1,67 @@
+'''Assignment NO. 10
+Aim : Data Visualization III
+Download the Iris flower dataset or any other dataset into a DataFrame. (e.g., 
+https://archive.ics.uci.edu/ml/datasets/Iris ). Scan the dataset and give the inference as:
+1. List down the features and their types (e.g., numeric, nominal) available in the dataset. 
+2. Create a histogram for each feature in the dataset to illustrate the feature distributions. 
+3. Create a box plot for each feature in the dataset. 
+4. Compare distributions and identify outliers.'''
+
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("iris.csv")
+df.columns = ["col0","col1","col2","col3","col4"]
+df
+
+#Dataset has 5 columns indicating 5 features about the data.
+column = len(list(df))
+column
+
+df.info()
+#Dataset contains 4 numerical columns & 1 object column.
+
+# Histogram
+# importing packages
+import seaborn as sns
+import matplotlib.pyplot as plt
+%matplotlib inline
+
+fig, axes = plt.subplots(2, 2, figsize=(16,8))
+
+axes[0,0].set_title("Sepal Length")
+axes[0,0].hist(df['col0'], bins=7)
+
+axes[0,1].set_title("Sepal Width")
+axes[0,1].hist(df["col1"])
+
+axes[1,0].set_title("Petal Length")
+axes[1,0].hist(df["col2"])
+
+axes[1,1].set_title("Petal Width")
+axes[1,1].hist(df["col3"])
+
+
+'''Create a box plot for each feature in the dataset. 
+What is Boxplot?
+A boxplot is a standardized way of displaying the distribution of data based on a five number summary 
+(“minimum”, first quartile (Q1), median, third quartile (Q3), and “maximum”). It can tell you about 
+your outliers and what their values are'''
+
+import pandas as pd
+import numpy as np
+
+df = pd.read_csv("iris.csv")
+df.columns = ["col0","col1","col2","col3","col4"]
+
+data_plot = [df["col0"],df["col1"],df["col2"],df["col3"]]
+
+sns.set_style("whitegrid")
+
+fig=plt.figure(1,figsize=(12,8))
+
+ax=fig.add_subplot(111)
+bp = ax.boxplot(data_plot)
+
+df.describe()
+

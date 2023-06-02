@@ -1,0 +1,116 @@
+'''ASSIGNMENT NO. 7
+    Title of the Assignment: Text Analytics 
+    1. Extract Sample document and apply following document pre-processing methods: 
+     Tokenization, POS Tagging, stop words removal, Stemming and Lemmatization. 
+    2. Create representation of document by calculating Term Frequency and Inverse Document 
+    Frequency. '''
+
+import nltk
+
+nltk.download('all')
+
+#.Sentence Tokenization
+from nltk.tokenize import sent_tokenize
+
+text="""Hello Mr. Smith, how are you doing today? The weather is
+great, and city is awesome. The sky is pinkish-blue. You shouldn't
+eat cardboard"""
+
+tokenized_text=sent_tokenize(text)
+
+print(tokenized_text)
+
+text="""Hello it's Monkey D. Luffy , The King of the pirates. and here 
+all are my crew zoro, sanji, nami, ussap, Brook, Franky, Chopper and Jimbe"""
+
+tokenized_text=sent_tokenize(text)
+tokenized_text
+
+#Word Tokenization
+from nltk.tokenize import word_tokenize
+tokenized_word=word_tokenize(text)
+print(tokenized_word)
+
+#.Frequency Distribution
+from nltk.probability import FreqDist
+fdist = FreqDist(tokenized_word)
+print(fdist)
+
+fdist.most_common(2)
+
+import matplotlib.pyplot as plt
+fdist.plot(30,cumulative=False)
+plt.show()
+
+#POS Tagging
+sent = "I am Luffy, the king of the pirates"
+tokens = nltk.word_tokenize(sent)
+print(tokens)
+
+nltk.download('averaged_perceptron_tagger') 
+nltk.pos_tag(tokens)
+
+#Stopwords
+from nltk.corpus import stopwords
+stop_words=set(stopwords.words("english")) 
+print(stop_words)
+
+#Removing Stop words
+filtered_sent=[]
+for w in tokens:
+    if w not in stop_words:
+        filtered_sent.append(w)
+
+print("Tokenized Sentence:",tokens)
+print("Filterd Sentens :", filtered_sent)
+
+#Stemming
+from nltk.stem import PorterStemmer
+from nltk.tokenize import sent_tokenize, word_tokenize
+ps = PorterStemmer()
+stemmed_words=[]
+for w in filtered_sent:
+    stemmed_words.append(ps.stem(w))
+print("Filtered Sentence:",filtered_sent)
+print("Stemmed Sentence:",stemmed_words)
+
+#Lemmatization:
+from nltk.stem.wordnet import WordNetLemmatizer
+lem = WordNetLemmatizer()
+from nltk.stem.porter import PorterStemmer
+stem = PorterStemmer()
+word = "flying"
+print("Lemmatized Word:",lem.lemmatize(word,"v")) 
+print("Stemmed Word:",stem.stem(word))
+
+#Term Frequency (TF):
+import pandas as pd
+import sklearn as sk
+import math
+
+first_sentence = "Data Science is the sexiest job of the 21st century"
+second_sentence = "machine learning is the key for data"
+science = first_sentence.split(" ")
+second_sentence = second_sentence.split(" ")#join them to remove common duplicate words
+total = set(first_sentence).union(set(second_sentence))
+print(total)
+
+wordDictA = dict.fromkeys(total, 0)
+wordDictB = dict.fromkeys(total, 0)
+for word in first_sentence:
+    wordDictA[word]+=1
+for word in second_sentence:
+    wordDictB[word]+=1
+
+pd.DataFrame([wordDictA, wordDictB])
+
+def computeTF(wordDict, doc):
+    tfDict = {}
+    corpusCount = len(doc)
+    for word, count in wordDict.items():
+        tfDict[word] = count/float(corpusCount)
+    return(tfDict)#running our sentences through the ft
+tfFirst = computeTF(wordDictA, first_sentence)
+tfSecond = computeTF(wordDictB,second_sentence)#Converting to dataframe for visualizationtf \
+pd.DataFrame([tfFirst,tfSecond])
+

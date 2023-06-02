@@ -1,0 +1,40 @@
+'''ASSIGNMENT NO. 8
+Title of the Assignment: Data Visualization I
+1. Use the inbuilt dataset 'titanic'. The dataset contains 891 rows and contains information
+about the passengers who boarded the unfortunate Titanic ship. Use the Seaborn library to
+see if we can find any patterns in the data.
+2. Write a code to check how the price of the ticket (column name: 'fare') for each passenger 
+is distributed by plotting a histogram'''
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+dataset = sns.load_dataset('titanic')
+dataset.head()
+
+#Ploting Histogram Matplotlib
+'''The Dist Plot
+The distplot() shows the histogram distribution of data for a single column. The column name 
+is passed as a parameter to the distplot() function.
+'''
+#You can clearly see that for more than 700 passengers, the ticket price is between 0 and 50.
+sns.displot(dataset['fare'], kde=False, bins=10)
+
+#. The Joint Plot
+'''The Joint Plot :
+The jointplot()is used to display the mutual distribution of each column. You need to pass 
+three parameters to jointplot.'''
+sns.jointplot(x='age', y='fare', data=dataset, kind='hex')
+#you can see that most of the passengers are between age 20 and 30 and 
+most of them paid between 10-50 for the tickets
+
+#The Pair Plot
+'''The paitplot() is a type of distribution plot that basically plots a joint plot for all the possible 
+combination of numeric and Boolean columns in your dataset. '''
+sns.pairplot(dataset)
+
+#The Rug Plot
+'''The rugplot() is used to draw small bars along x-axis for each point in the dataset. To plot a 
+rug plot, you need to pass the name of the column. Let's plot a rug plot for fare.'''
+sns.rugplot(dataset['fare'])

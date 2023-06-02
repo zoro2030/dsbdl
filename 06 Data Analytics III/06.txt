@@ -1,0 +1,51 @@
+'''assignment no. 6
+    Title of the Assignment: Data Analytics III 
+    1. Implement simple Naive Bayes classification algorithm using Python/R on iris.csv dataset. 
+    2. Compute confusion matrix to find TP, FP, TN, FN, Accuracy, Error rate, Precision, Recall 
+    on the given dataset.'''
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+
+dataset=pd.read_csv('iris.csv')
+X=dataset.iloc[:,:4].values 
+y = dataset['Species'].values
+print(dataset.head(5)) 
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.2)
+from sklearn import preprocessing
+sc = preprocessing.StandardScaler()
+X_train = sc.fit_transform(X_train) 
+X_test = sc.transform(X_test)
+
+from sklearn.naive_bayes import GaussianNB
+classifier = GaussianNB() 
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test) 
+y_pred
+
+# Confusion Matrix and Accuracy 
+from sklearn.metrics import confusion_matrix 
+cm = confusion_matrix(y_test, y_pred)
+from sklearn.metrics import accuracy_score
+print("Accuracy : ", accuracy_score(y_test, y_pred)) 
+print(cm)
+
+# Comparing the Real Values with Predicted Values
+df = pd.DataFrame({'Real Values':y_test, 'Predicted Values':y_pred})
+print(df)
+
+#We have to import precision_score, recall_score, accuracy_score from sklearn.metrics 
+from sklearn.metrics import precision_score, recall_score, accuracy_score
+m=accuracy_score(y_test, y_pred) 
+print("error rate:-",1-m) 
+
+print('Precision:',precision_score(y_test,y_pred,average='micro'))
+
+print("Recall Score:",recall_score(y_test,y_pred,average='micro'))
+
+'''Thus, in this way we have successfully been able to build a Naive Bayes Classification Model 
+that is able to classify a flower depending upon 4 characteristic features. This model can be 
+implemented and tested with several other classification datasets that are available on the net.'''

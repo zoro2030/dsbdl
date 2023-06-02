@@ -1,0 +1,27 @@
+//To execute scala code
+//step 1: scalac file_name.scala
+//step 2: scala file_name (without extension)
+
+//simple code for switch case of arithmaics operation
+import scala.io.StdIn //library for user input
+
+object Main {
+  def main(args: Array[String]): Unit = {
+    println("Enter two numbers:")
+    val num1 = StdIn.readInt() //user input
+    val num2 = StdIn.readInt() //user input
+
+    println("Enter the operation: (1) Add, (2) Subtract, (3) Multiply, (4) Divide") //choices
+    val choice = StdIn.readInt() //user input
+
+    val result = choice match {
+      case 1 => num1 + num2
+      case 2 => num1 - num2
+      case 3 => num1 * num2
+      case 4 => num1.toDouble / num2.toDouble
+      case _ => throw new IllegalArgumentException("Invalid choice")
+    }
+
+    println("Result: " + result)
+  }
+}
